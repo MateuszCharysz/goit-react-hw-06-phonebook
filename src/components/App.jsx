@@ -7,32 +7,32 @@ import { nanoid } from 'nanoid';
 import JsLocalStorage from './JsLocalStorage';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([
+  const [contacts, setContacts] = useState([ //TODO przenieść do reducer.js
     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ]);
-  const [filter, setFilter] = useState('');
-  const [firstRun, setFirstRun] = useState(true);
+  const [filter, setFilter] = useState(''); //TODO przenieść do reducer.js
+  const [firstRun, setFirstRun] = useState(true); // TODO przekonfigurować do reducer.js lub usunąć
 
-  const filterHandler = e => {
+  const filterHandler = e => { //TODO przełożyć do action.js??
     const { name, value } = e.target;
     if (name === 'filter') {
       setFilter(value);
     }
   };
 
-  const filterContacts = () =>
+  const filterContacts = () => //TODO do actions.js ??
     contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase()),
     );
 
-  const deleteContact = id => {
+  const deleteContact = id => { //TODO do actions.js?
     setContacts([...contacts.filter(contact => contact.id !== id)]);
   };
 
-  const submitForm = callback => {
+  const submitForm = callback => { //TODO do actions.js?
     if (
       contacts.filter(contact => contact.name === callback.name).length !== 1
     ) {

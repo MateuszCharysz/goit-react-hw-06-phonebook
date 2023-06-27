@@ -5,19 +5,19 @@ import Input from 'components/input/input';
 import Button from 'components/button/button';
 
 export const Form = ({ handler }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [name, setName] = useState(''); // TODO do przeniesienia do reducer.js
+  const [number, setNumber] = useState(''); //TODO do przeniesienia do reducer
 
   const submitHandler = () => {
-    return { name: name, number: number };
+    return { name: name, number: number }; //TODO do usunięca funkcja do przekazania danych dalej
   };
 
-  const formReset = () => {
+  const formReset = () => { //TODO actions?
     setName('');
     setNumber('');
   };
 
-  const changeHandler = e => {
+  const changeHandler = e => { //TODO actions
     const { name, value } = e.target;
     if (name === 'name') {
       setName(value);
