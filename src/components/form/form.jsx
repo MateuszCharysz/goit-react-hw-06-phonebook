@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import css from './Form.module.css';
 import Input from 'components/input/input';
 import Button from 'components/button/button';
+import { useDispatch } from 'react-redux';
+import selectors from 'components/redux/selectors';
 
-export const Form = ({ handler }) => {
-  const [name, setName] = useState(''); // TODO do przeniesienia do reducer.js
-  const [number, setNumber] = useState(''); //TODO do przeniesienia do reducer
+export const Form = () => {
+  const contacts = useDispatch(selectors.getContacts)
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  const submitHandler = () => {
-    return { name: name, number: number }; //TODO do usunięca funkcja do przekazania danych dalej
+  // const submitHandler = () => {
+  //   return { name: name, number: number };
+  // };
+
+  const submitForm = () => {
+    console.log(contacts);
+    if (
+      contacts.filter(contact => contact.name === name).length !== 1
+    ) {console.log('does it work')
+
+    } else {
+      alert(`${name} is already in contacts.`);
+    }
   };
 
-  const formReset = () => { //TODO actions?
+  const formReset = () => {
     setName('');
     setNumber('');
   };
 
-  const changeHandler = e => { //TODO actions
+  const changeHandler = e => {
     const { name, value } = e.target;
     if (name === 'name') {
       setName(value);
@@ -27,10 +40,11 @@ export const Form = ({ handler }) => {
   };
 
   return (
+    //TODO pytanie czy logia
     <form
       onSubmit={e => {
         e.preventDefault();
-        handler(submitHandler());
+        submitForm();
         formReset();
       }}
       className={css.form}
@@ -61,7 +75,3 @@ export const Form = ({ handler }) => {
 };
 
 export default Form;
-
-Form.propTypes = {
-  handler: PropTypes.func.isRequired,
-};

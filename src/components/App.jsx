@@ -5,8 +5,11 @@ import ContactList from './contact-list/contact-list';
 import css from './App.module.css';
 import { nanoid } from 'nanoid';
 import JsLocalStorage from './JsLocalStorage';
+import selectors from './redux/selectors';
+import { useDispatch } from 'react-redux';
 
 export const App = () => {
+
   const [contacts, setContacts] = useState([ //TODO przenieść do reducer.js
     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
@@ -32,7 +35,7 @@ export const App = () => {
     setContacts([...contacts.filter(contact => contact.id !== id)]);
   };
 
-  const submitForm = callback => { //TODO do actions.js?
+  const submitForm = callback => {
     if (
       contacts.filter(contact => contact.name === callback.name).length !== 1
     ) {
@@ -71,7 +74,7 @@ export const App = () => {
   return (
     <div className={css.container}>
       <h1>Phonebook</h1>
-      <Form handler={submitForm} />
+      <Form />
       <h2>Contacts</h2>
       <Input
         label="Find contacts by name"
