@@ -3,50 +3,35 @@ import { Form } from './form/form';
 import Input from './input/input';
 import ContactList from './contact-list/contact-list';
 import css from './App.module.css';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import JsLocalStorage from './JsLocalStorage';
 import selectors from './redux/selectors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from './redux/filterSlice';
+import { deleteContact, replaceContacts } from './redux/contactsSlice';
 
 export const App = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectors.getContacts);
+  const filter = useSelector(selectors.getFilter);
 
-  const [contacts, setContacts] = useState([ //TODO przenieść do reducer.js
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  ]);
-  const [filter, setFilter] = useState(''); //TODO przenieść do reducer.js
   const [firstRun, setFirstRun] = useState(true); // TODO przekonfigurować do reducer.js lub usunąć
 
   const filterHandler = e => { //TODO przełożyć do action.js??
     const { name, value } = e.target;
     if (name === 'filter') {
-      setFilter(value);
+      dispatch(setFilter(value));
     }
   };
 
-  const filterContacts = () => //TODO do actions.js ??
+  const filterContacts = () =>
     contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase()),
     );
 
-  const deleteContact = id => { //TODO do actions.js?
-    setContacts([...contacts.filter(contact => contact.id !== id)]);
+  const removeContact = id => {
+    dispatch(deleteContact(id));
   };
-
-  const submitForm = callback => {
-    if (
-      contacts.filter(contact => contact.name === callback.name).length !== 1
-    ) {
-      let formState = { id: idCreate(), ...callback };
-      setContacts(prevState => [...prevState, formState]);
-    } else {
-      alert(`${callback.name} is already in contacts.`);
-    }
-  };
-
-  const idCreate = () => nanoid();
 
   useEffect(
     (key = 'contacts') => {
@@ -54,11 +39,13 @@ export const App = () => {
         JSON.stringify(JsLocalStorage.load(key)) !== JSON.stringify(contacts)
       ) {
         if (localStorage.getItem(key) === null) {
+          console.log('no key')
           JsLocalStorage.save(key, contacts);
           setFirstRun(false);
         } else if (localStorage.getItem(key) !== null && firstRun === true) {
+          console.log('update initial state from local storage');
           const lsState = JsLocalStorage.load(key);
-          setContacts([...lsState]);
+          dispatch(replaceContacts(lsState));
           setFirstRun(false);
         } else {
           JsLocalStorage.save(key, contacts);
@@ -68,7 +55,7 @@ export const App = () => {
       } else {
       }
     },
-    [contacts, firstRun],
+    [contacts, firstRun, dispatch],
   );
 
   return (
@@ -85,7 +72,7 @@ export const App = () => {
         funcChange={filterHandler}
         stateField={filter}
       />
-      <ContactList arr={filterContacts()} btnHandler={deleteContact} />
+      <ContactList arr={filterContacts()} btnHandler={removeContact} />
     </div>
   );
 };

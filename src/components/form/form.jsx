@@ -2,24 +2,20 @@ import React, { useState } from 'react';
 import css from './Form.module.css';
 import Input from 'components/input/input';
 import Button from 'components/button/button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import selectors from 'components/redux/selectors';
+import { addContact } from 'components/redux/contactsSlice';
 
 export const Form = () => {
-  const contacts = useDispatch(selectors.getContacts)
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectors.getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
-  // const submitHandler = () => {
-  //   return { name: name, number: number };
-  // };
+  console.log(contacts);
 
   const submitForm = () => {
-    console.log(contacts);
-    if (
-      contacts.filter(contact => contact.name === name).length !== 1
-    ) {console.log('does it work')
-
+    if (contacts.filter(contact => contact.name === name).length !== 1) {
+      dispatch(addContact(name, number));
     } else {
       alert(`${name} is already in contacts.`);
     }
@@ -40,7 +36,6 @@ export const Form = () => {
   };
 
   return (
-    //TODO pytanie czy logia
     <form
       onSubmit={e => {
         e.preventDefault();

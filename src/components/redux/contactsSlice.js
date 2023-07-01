@@ -6,9 +6,6 @@ const contactsInitialState = [
   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
-// // filter: '',
-// name: '',
-// number: '',
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -18,7 +15,7 @@ const contactsSlice = createSlice({
       reducer(state, action) {
         state.push(action.payload);
       },
-      prepare({ formName, formNumber }) {
+      prepare(formName, formNumber) {
         return {
           payload: {
             id: nanoid(),
@@ -29,10 +26,16 @@ const contactsSlice = createSlice({
       },
     },
     deleteContact(state, action) {
-      state.filter(({ id }) => action.payload !== id);
+      const index = state.findIndex(contact => contact.id === action.payload);
+      state.splice(index, 1);
     },
+    replaceContacts(state, action) {
+      console.log('replacing contacts')
+      console.log(action.payload)
+      return action.payload
+    }
   },
 });
 
-export const {addContact, deleteContact} = contactsSlice.actions;
+export const { addContact, deleteContact, replaceContacts } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
