@@ -3,7 +3,6 @@ import { Form } from './form/form';
 import Input from './input/input';
 import ContactList from './contact-list/contact-list';
 import css from './App.module.css';
-// import { nanoid } from 'nanoid';
 import JsLocalStorage from './JsLocalStorage';
 import selectors from './redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,9 +14,9 @@ export const App = () => {
   const contacts = useSelector(selectors.getContacts);
   const filter = useSelector(selectors.getFilter);
 
-  const [firstRun, setFirstRun] = useState(true); // TODO przekonfigurować do reducer.js lub usunąć
+  const [firstRun, setFirstRun] = useState(true);
 
-  const filterHandler = e => { //TODO przełożyć do action.js??
+  const filterHandler = e => {
     const { name, value } = e.target;
     if (name === 'filter') {
       dispatch(setFilter(value));

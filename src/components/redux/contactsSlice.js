@@ -30,12 +30,11 @@ const contactsSlice = createSlice({
       state.splice(index, 1);
     },
     replaceContacts(state, action) {
-      console.log('replacing contacts')
-      console.log(action.payload)
-      return action.payload
-    }
+      return action.payload;
+    },
   },
 });
 
-export const { addContact, deleteContact, replaceContacts } = contactsSlice.actions;
+export const { addContact, deleteContact, replaceContacts } =
+  contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

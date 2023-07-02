@@ -11,7 +11,6 @@ export const Form = () => {
   const contacts = useSelector(selectors.getContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  console.log(contacts);
 
   const submitForm = () => {
     if (contacts.filter(contact => contact.name === name).length !== 1) {
